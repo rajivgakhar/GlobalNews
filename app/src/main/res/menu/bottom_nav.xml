@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/top_stories"
+        android:icon="@drawable/top"
+        android:title="Top Stories"/>
+    <item
+        android:id="@+id/saved"
+        android:icon="@drawable/saved"
+        android:title="Saved"/>
+    <item
+        android:id="@+id/sections"
+        android:icon="@drawable/sections"
+        android:title="Sections"/>
+</menu>

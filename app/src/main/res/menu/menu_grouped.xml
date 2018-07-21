@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/group_1"
+        android:checkableBehavior="single"
+        >
+        <item
+            android:id="@+id/top_stories"
+            android:checkable="true"
+            android:icon="@drawable/top_stories"
+            android:title="Top Stories" />
+        <item
+            android:id="@+id/saved"
+            android:checkable="true"
+            android:icon="@drawable/saved"
+            android:title="Saved" />
+        <item
+            android:id="@+id/business"
+            android:checkable="true"
+            android:icon="@drawable/business"
+            android:title="Business" />
+        <item
+            android:id="@+id/entertainment"
+            android:checkable="true"
+            android:icon="@drawable/entertainment"
+            android:title="Entertainment" />
+        <item
+            android:id="@+id/health"
+            android:checkable="true"
+            android:icon="@drawable/child"
+            android:title="Health" />
+        <item
+            android:id="@+id/science"
+            android:checkable="true"
+            android:icon="@drawable/science"
+            android:title="Science" />
+        <item
+            android:id="@+id/sports"
+            android:checkable="true"
+            android:icon="@drawable/sports"
+            android:title="Sports" />
+        <item
+            android:id="@+id/technology"
+            android:checkable="true"
+            android:icon="@drawable/technology"
+            android:title="Technology" />
+    </group>
+    <group
+        android:id="@+id/group_2"
+        android:checkableBehavior="single"
+        >
+    <item
+        android:id="@+id/settings"
+        android:checkable="true"
+        android:icon="@drawable/settings"
+        android:title="Settings" />
+        <item
+            android:id="@+id/login"
+            android:checkable="true"
+            android:icon="@drawable/user"
+            android:title="Login or SignUp" />
+    <item
+        android:id="@+id/sendfeedback"
+        android:checkable="true"
+        android:icon="@drawable/send"
+        android:title="Send Feedback" />
+    </group>
+</menu>
