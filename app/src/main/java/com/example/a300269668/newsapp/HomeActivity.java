@@ -1,6 +1,7 @@
 package com.example.a300269668.newsapp;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
@@ -177,46 +178,57 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         String itemName=(String)item.getTitle();
         Toast.makeText(this,itemName+" is clicked",Toast.LENGTH_SHORT).show();
         closeDrawer();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (item.getItemId()){
             case R.id.top_stories:
                 selectedFragment = new TabFragment(100);
                 mToolbar.setTitle("Global News");
+                transaction.replace(R.id.frame_layout, selectedFragment);
                 break;
             case R.id.saved:
                 break;
             case R.id.business:
                 selectedFragment = new TabFragment(0);
                 mToolbar.setTitle("Business");
+                transaction.replace(R.id.frame_layout, selectedFragment);
                 break;
             case R.id.entertainment:
                 selectedFragment = new TabFragment(1);
                 mToolbar.setTitle("Entertainment");
+                transaction.replace(R.id.frame_layout, selectedFragment);
                 break;
             case R.id.health:
                 selectedFragment = new TabFragment(3);
                 mToolbar.setTitle("Health");
+                transaction.replace(R.id.frame_layout, selectedFragment);
                 break;
             case R.id.science:
                 selectedFragment = new TabFragment(4);
                 mToolbar.setTitle("Science");
+                transaction.replace(R.id.frame_layout, selectedFragment);
                 break;
             case R.id.sports:
                 selectedFragment = new TabFragment(5);
                 mToolbar.setTitle("Sports");
+                transaction.replace(R.id.frame_layout, selectedFragment);
                 break;
             case R.id.technology:
                 selectedFragment = new TabFragment(6);
                 mToolbar.setTitle("Technology");
+                transaction.replace(R.id.frame_layout, selectedFragment);
                 break;
             case R.id.settings:
                 break;
             case R.id.login:
                 break;
             case R.id.sendfeedback:
+                //feedbackFragment = new FeedbackFragment();
+               // mToolbar.setTitle("Feedback");
+               // transaction.replace(R.id.frame_layout, feedbackFragment);
+                startActivity(new Intent(HomeActivity.this,FeedbackActivity.class));
                 break;
         }
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, selectedFragment);
+
         transaction.commit();
         return true;
     }

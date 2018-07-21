@@ -44,7 +44,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private List<ListItem> listItems;//create custom ListItem class
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
-    private String userId="";
+    private String userId = "";
+
     public MyAdapter(Context context, List<ListItem> listItem) {
         this.context = context;
         listItems = listItem;
@@ -86,7 +87,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView title;
-        public TextView txtTime, txtShare,txtSavedIcon;
+        public TextView txtTime, txtShare, txtSavedIcon;
         public ImageView newsImg;
 
         public ViewHolder(View itemView) {
@@ -94,7 +95,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             title = (TextView) itemView.findViewById(R.id.txtTitle);
             txtTime = (TextView) itemView.findViewById(R.id.txtTime);
             txtShare = (TextView) itemView.findViewById(R.id.txtShare);
-            txtSavedIcon= (TextView) itemView.findViewById(R.id.txtSavedIcon);
+            txtSavedIcon = (TextView) itemView.findViewById(R.id.txtSavedIcon);
             newsImg = (ImageView) itemView.findViewById(R.id.newsImage);
             txtShare.setOnClickListener(this);
             newsImg.setOnClickListener(this);
@@ -109,7 +110,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             if (view.getId() == R.id.txtShare) {
                 shareTextUrl(item.getUrl());
             } else if (view.getId() == R.id.txtSavedIcon) {
-            view.setBackgroundResource(R.drawable.bookmark_set);
+                view.setBackgroundResource(R.drawable.bookmark_set);
                 saveNews(item.getTitle());
             } else {
                 Intent browserIntent = new Intent(context.getApplicationContext(), ViewNewsActivity.class);
@@ -163,7 +164,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         context.startActivity(Intent.createChooser(share, "Share News!"));
     }
 
-    private void saveNews(String title){
+    private void saveNews(String title) {
         if (TextUtils.isEmpty(userId)) {
             userId = mFirebaseDatabase.push().getKey();
         }
@@ -171,6 +172,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         mFirebaseDatabase.child(userId).setValue(news);
         addUserChangeListener();
     }
+
     private void addUserChangeListener() {
         // User data change listener
         mFirebaseDatabase.child(userId).addValueEventListener(new ValueEventListener() {
@@ -192,6 +194,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
 
             }
+
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
