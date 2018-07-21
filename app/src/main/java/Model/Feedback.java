@@ -11,9 +11,22 @@ public class Feedback {
     public Feedback() {
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
     public Feedback(String name, String email, String comment) {
         this.name = name;
         this.email = email;
+
         this.comment = comment;
     }
 }
