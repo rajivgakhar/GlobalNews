@@ -1,4 +1,4 @@
-package com.example.a300269668.newsapp;
+package com.rajiv.a300269668.newsapp;
 
 
 import android.annotation.SuppressLint;

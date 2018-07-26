@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.a300269668.newsapp.R;
+import com.rajiv.a300269668.newsapp.R;
 
 import java.util.List;
 

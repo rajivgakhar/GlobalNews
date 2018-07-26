@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:196838147215:android:0fa1fa3fac0cc804",
         "android_client_info": {
-          "package_name": "com.example.a300269668.newsapp"
+          "package_name": "com.rajiv.a300269668.newsapp"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "196838147215-tknfsll419knfi883vmu219djcs0rulm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.a300269668.newsapp",
+            "package_name": "com.rajiv.a300269668.newsapp",
             "certificate_hash": "0cfe100651fbefff54aa1833b5d02710ceebb0ba"
           }
         },

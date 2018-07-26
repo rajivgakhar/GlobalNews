@@ -16,8 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a300269668.newsapp.R;
-import com.example.a300269668.newsapp.ViewNewsActivity;
+import com.rajiv.a300269668.newsapp.R;
+import com.rajiv.a300269668.newsapp.ViewNewsActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

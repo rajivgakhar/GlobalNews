@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.a300269668.newsapp.SectionFragment">
+    tools:context="com.rajiv.a300269668.newsapp.SectionFragment">
 
 
     <GridView

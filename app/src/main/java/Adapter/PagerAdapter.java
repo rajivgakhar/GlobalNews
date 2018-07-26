@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.a300269668.newsapp.TabFragment;
+import com.rajiv.a300269668.newsapp.TabFragment;
 
 /**
  * Created by mom on 2018-06-17.

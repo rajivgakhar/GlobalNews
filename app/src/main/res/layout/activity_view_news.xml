@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.a300269668.newsapp.ViewNewsActivity">
+    tools:context="com.rajiv.a300269668.newsapp.ViewNewsActivity">
     <include layout="@layout/toolbar"
         android:id="@+id/toolbar">
 
