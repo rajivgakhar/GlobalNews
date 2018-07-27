@@ -8,20 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:196838147215:android:0fa1fa3fac0cc804",
+        "mobilesdk_app_id": "1:196838147215:android:06e70acfbf7856e9",
         "android_client_info": {
           "package_name": "com.rajiv.a300269668.newsapp"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "196838147215-tknfsll419knfi883vmu219djcs0rulm.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.rajiv.a300269668.newsapp",
-            "certificate_hash": "0cfe100651fbefff54aa1833b5d02710ceebb0ba"
-          }
-        },
         {
           "client_id": "196838147215-hq596idtdncs1a1e2ghr503af73ljtp5.apps.googleusercontent.com",
           "client_type": 3
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "196838147215-hq596idtdncs1a1e2ghr503af73ljtp5.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

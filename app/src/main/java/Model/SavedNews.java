@@ -2,11 +2,32 @@ package Model;
 
 public class SavedNews {
     public String userId;
-    public String title;
+    public ListItem savedItem;
     public SavedNews() {
     }
-    public SavedNews(String userId, String title) {
+    public SavedNews(String userId, ListItem savedItem) {
         this.userId = userId;
-        this.title = title;
+        this.savedItem = savedItem;
+    }
+    public SavedNews( ListItem savedItem) {
+
+        this.savedItem = savedItem;
+    }
+    public SavedNews( String userId) {
+
+        this.userId = userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
+
+    }
+
+    public ListItem getSavedItem() {
+        return savedItem;
     }
 }

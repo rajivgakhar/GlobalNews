@@ -11,6 +11,7 @@ public class ListItem {
     private String url;
     private String publishedAt;
 
+    public ListItem(){}
     public ListItem(String title, String description, String image, String url, String publishedAt) {
         this.title = title;
         this.description = description;

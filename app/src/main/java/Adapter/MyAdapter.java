@@ -2,6 +2,7 @@ package Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.rajiv.a300269668.newsapp.R;
 import com.rajiv.a300269668.newsapp.ViewNewsActivity;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +35,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import Model.ListItem;
 import Model.SavedNews;
@@ -46,6 +49,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private FirebaseDatabase mFirebaseInstance;
     private String userId = "";
 
+
     public MyAdapter(Context context, List<ListItem> listItem) {
         this.context = context;
         listItems = listItem;
@@ -53,6 +57,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         mFirebaseInstance = FirebaseDatabase.getInstance();
         // get reference to 'users' node
         mFirebaseDatabase = mFirebaseInstance.getReference("savedNews");
+        SharedPreferences pref = context.getSharedPreferences("_androidId", context.MODE_PRIVATE);
+        String android_id = pref.getString("android_id", "0");
+        mFirebaseDatabase = mFirebaseDatabase.child(android_id);
     }
 
     @Override
@@ -107,17 +114,33 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public void onClick(View view) {
             int position = getAdapterPosition();
             ListItem item = listItems.get(position);
+
+
             if (view.getId() == R.id.txtShare) {
                 shareTextUrl(item.getUrl());
             } else if (view.getId() == R.id.txtSavedIcon) {
-                view.setBackgroundResource(R.drawable.bookmark_set);
-                saveNews(item.getTitle());
+                Log.e("sss1",view.getBackground().getConstantState()+"");
+                Log.e("sss2",view.getResources().getDrawable(R.drawable.bookmark).getConstantState()+"");
+                if(view.getResources().equals(R.drawable.bookmark)) {
+                    Log.e("sss","in");
+                    view.setBackgroundResource(R.drawable.bookmark_set);
+                    saveNews(item);
+                }else{
+                    Log.e("sss","out");
+                    view.setBackgroundResource(R.drawable.bookmark);
+                    deleteNews(item.getPublishedAt());
+                }
             } else {
                 Intent browserIntent = new Intent(context.getApplicationContext(), ViewNewsActivity.class);
                 browserIntent.putExtra("url", item.getUrl() + "");
                 context.startActivity(browserIntent);
             }
         }
+    }
+
+    private void deleteNews(String publishedAt) {
+        publishedAt = publishedAt.replace("Z", " ");
+        mFirebaseDatabase.child(publishedAt).setValue(null);
     }
 
     public String getTimeInFormat(String time) {
@@ -164,33 +187,37 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         context.startActivity(Intent.createChooser(share, "Share News!"));
     }
 
-    private void saveNews(String title) {
-        if (TextUtils.isEmpty(userId)) {
-            userId = mFirebaseDatabase.push().getKey();
-        }
-        SavedNews news = new SavedNews("testUserId", title);
+    private void saveNews(ListItem item) {
+        userId = item.getPublishedAt();
+        userId = userId.replace("Z", " ");
+        SavedNews news = new SavedNews(item);
+
         mFirebaseDatabase.child(userId).setValue(news);
-        addUserChangeListener();
+         addUserChangeListener(item.getPublishedAt());
     }
 
-    private void addUserChangeListener() {
+    private void addUserChangeListener(String publish) {
+        publish = publish.replace("Z", " ");
+
         // User data change listener
-        mFirebaseDatabase.child(userId).addValueEventListener(new ValueEventListener() {
+        mFirebaseDatabase.child(publish).addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                SavedNews news = dataSnapshot.getValue(SavedNews.class);
+                   Log.e("rajiv",dataSnapshot.getValue(SavedNews.class)+"");
+                 SavedNews news = dataSnapshot.getValue(SavedNews.class);
+                   Log.e("rajiv",news.getSavedItem().getTitle());
             /* User user = null;
              for (DataSnapshot child : dataSnapshot.getChildren()) {
                  user = child.getValue(User.class);
              }
 */
-
                 // Check for null
-                if (news == null) {
-                    Log.e("tagg", "User data is null!");
-                    return;
-                }
-                Log.e("tagg", "User data is changed!" + news.userId + ", " + news.title);
+                //  if (news == null) {
+                //       Log.e("tagg", "User data is null!");
+                //       return;
+                //   }
+                //Log.e("tagg", "User data is changed!" + news.userId + ", " + news.title);
 
 
             }

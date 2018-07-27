@@ -2,6 +2,7 @@ package com.rajiv.a300269668.newsapp;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
@@ -22,6 +23,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.UUID;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private Toolbar mToolbar;
@@ -69,8 +72,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        generateUniqueId();
 
     }
+
+    private void generateUniqueId() {
+         String android_id = UUID.randomUUID().toString();
+        SharedPreferences pref=getSharedPreferences("_androidId",MODE_PRIVATE);
+        String existing_id=pref.getString("android_id","0");
+        if(existing_id.equals("0")) {
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("android_id", android_id);
+            editor.apply();
+        }
+    }
+
     private void setupToolbarMenu(){
         mToolbar=(Toolbar)findViewById(R.id.toolbar);
         mToolbar.setTitle("Global News");
