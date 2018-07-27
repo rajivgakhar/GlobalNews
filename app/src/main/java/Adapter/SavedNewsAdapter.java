@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -42,17 +43,17 @@ import Model.ListItem;
 import Model.SavedNews;
 
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.ViewHolder> {
 
     private Context context; //current state of the class
     private List<ListItem> listItems;//create custom ListItem class
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
     private String userId = "";
-    List<String> savedItemKeys = new ArrayList<>();
+    List<String> savedItemKeys =new ArrayList<>();
 
 
-    public MyAdapter(Context context, List<ListItem> listItem) {
+    public SavedNewsAdapter(Context context, List<ListItem> listItem) {
         this.context = context;
         listItems = listItem;
 
@@ -62,17 +63,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         SharedPreferences pref = context.getSharedPreferences("_androidId", context.MODE_PRIVATE);
         String android_id = pref.getString("android_id", "0");
         mFirebaseDatabase = mFirebaseDatabase.child(android_id);
+        
     }
 
     @Override
-    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row, parent, false);
+    public SavedNewsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_list_row, parent, false);
 
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(MyAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(SavedNewsAdapter.ViewHolder holder, int position) {
         ListItem listItem = listItems.get(position);
         holder.title.setText(listItem.getTitle());
 
@@ -85,7 +87,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 .error(R.drawable.error)
                 //.resize(800, 600)
                 .into(holder.newsImg);
-        addSavedNewsChangeListener(holder.ivSavedIcon, listItem.getPublishedAt());
+        addSavedNewsChangeListener(holder.ivSavedIcon,listItem.getPublishedAt());
         holder.ivSavedIcon.setTag(R.drawable.bookmark);
         //  else
         //     holder.newsImg.setVisibility(View.GONE);
@@ -123,9 +125,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             if (view.getId() == R.id.txtShare) {
                 shareTextUrl(item.getUrl());
             } else if (view.getId() == R.id.txtSavedIcon) {
-                ImageView iv = (ImageView) view;
-                Log.e("checkcTag", view.getTag().toString());
-                switch ((Integer) view.getTag()) {
+                ImageView iv =(ImageView)view;
+                switch ((Integer)iv.getTag()){
                     case R.drawable.bookmark:
                         iv.setBackgroundResource(R.drawable.bookmark_set);
                         iv.setTag(R.drawable.bookmark_set);
@@ -135,7 +136,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                         iv.setBackgroundResource(R.drawable.bookmark);
                         iv.setTag(R.drawable.bookmark);
                         deleteNews(item.getPublishedAt());
-                        //addSavedNewsChangeListener(iv, item.getPublishedAt());
                         break;
                 }
             } else {
@@ -149,6 +149,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private void deleteNews(String publishedAt) {
         publishedAt = publishedAt.replace("Z", " ");
         mFirebaseDatabase.child(publishedAt).setValue(null);
+
     }
 
     public String getTimeInFormat(String time) {
@@ -211,14 +212,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                if (!savedItemKeys.contains(dataSnapshot.getKey()))
-                    savedItemKeys.add(dataSnapshot.getKey());
-                if (savedItemKeys.contains(finalPublishedAt)) {
-                    ivSavedIcon.setImageResource(R.drawable.bookmark_set);
-                    ivSavedIcon.setTag(R.drawable.bookmark_set);
-                }
-            }
 
+            }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
             }
@@ -227,11 +222,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 if (savedItemKeys.contains(dataSnapshot.getKey()))
                     savedItemKeys.remove(savedItemKeys.indexOf(dataSnapshot.getKey()));
-                    ivSavedIcon.setImageResource(R.drawable.bookmark);
-                    ivSavedIcon.setTag(R.drawable.bookmark);
+                ivSavedIcon.setImageResource(R.drawable.bookmark);
+                ivSavedIcon.setTag(R.drawable.bookmark);
 
             }
-
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
             }

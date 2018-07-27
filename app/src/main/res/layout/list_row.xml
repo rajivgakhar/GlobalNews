@@ -62,7 +62,7 @@
         android:background="@drawable/share"
         android:text="" />
 
-    <TextView
+    <ImageView
         android:id="@+id/txtSavedIcon"
         android:layout_width="30dp"
         android:layout_height="35dp"

@@ -13,7 +13,12 @@ public class SavedNews {
 
         this.savedItem = savedItem;
     }
-    public SavedNews( String userId) {
+
+    public void setSavedItem(ListItem savedItem) {
+        this.savedItem = savedItem;
+    }
+
+    public SavedNews(String userId) {
 
         this.userId = userId;
     }
