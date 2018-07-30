@@ -238,8 +238,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.settings:
                 break;
-            case R.id.login:
-                break;
             case R.id.sendfeedback:
                 //feedbackFragment = new FeedbackFragment();
                // mToolbar.setTitle("Feedback");
