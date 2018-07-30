@@ -33,14 +33,16 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.ViewHo
 
     @Override
     public FeedbackAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.feedback_list, parent, false);
         return new FeedbackAdapter.ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(FeedbackAdapter.ViewHolder holder, int position) {
         Feedback listItem = listItems.get(position);
-        holder.title.setText(listItem.getName());
+        holder.name.setText(listItem.getName());
+        holder.comment.setText(listItem.getComment());
+        holder.date.setText(listItem.getDate());
     }
 
     @Override
@@ -48,21 +50,13 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.ViewHo
         return listItems.size();
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView title;
-        public TextView txtTime, txtShare, txtSavedIcon;
-        public ImageView newsImg;
+        public TextView name,comment,date;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.txtTitle);
-            txtTime = (TextView) itemView.findViewById(R.id.txtTime);
-            txtShare = (TextView) itemView.findViewById(R.id.txtShare);
-            txtSavedIcon = (TextView) itemView.findViewById(R.id.txtSavedIcon);
-            newsImg = (ImageView) itemView.findViewById(R.id.newsImage);
-            txtShare.setOnClickListener(this);
-            newsImg.setOnClickListener(this);
-            title.setOnClickListener(this);
-            txtSavedIcon.setOnClickListener(this);
+            name = (TextView) itemView.findViewById(R.id.txtName);
+            comment = (TextView) itemView.findViewById(R.id.txtComment);
+            date = (TextView) itemView.findViewById(R.id.txtDate);
         }
 
         @Override

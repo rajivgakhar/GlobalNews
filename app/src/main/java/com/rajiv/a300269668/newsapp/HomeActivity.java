@@ -61,10 +61,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.saved:
                         selectedFragment = new TabFragment(11);
                         transaction.replace(R.id.frame_layout, selectedFragment);
+                        mToolbar.setTitle("Saved News");
                         break;
                     case R.id.sections:
                         sectionFragment = new SectionFragment();
                         transaction.replace(R.id.frame_layout, sectionFragment);
+                        mToolbar.setTitle("Categories");
                         break;
                 }
                 transaction.commit();
@@ -191,8 +193,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        String itemName=(String)item.getTitle();
-        Toast.makeText(this,itemName+" is clicked",Toast.LENGTH_SHORT).show();
         closeDrawer();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (item.getItemId()){
@@ -202,6 +202,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 transaction.replace(R.id.frame_layout, selectedFragment);
                 break;
             case R.id.saved:
+                selectedFragment = new TabFragment(11);
+                transaction.replace(R.id.frame_layout, selectedFragment);
+                mToolbar.setTitle("Saved News");
                 break;
             case R.id.business:
                 selectedFragment = new TabFragment(0);

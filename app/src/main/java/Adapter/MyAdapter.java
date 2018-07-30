@@ -199,7 +199,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         userId = item.getPublishedAt();
         userId = userId.replace("Z", " ");
         SavedNews news = new SavedNews(item);
-
         mFirebaseDatabase.child(userId).setValue(news);
 
     }

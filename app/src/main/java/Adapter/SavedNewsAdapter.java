@@ -1,5 +1,6 @@
 package Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -45,31 +48,32 @@ import Model.SavedNews;
 
 public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.ViewHolder> {
 
-    private Context context; //current state of the class
+    private Activity context; //current state of the class
     private List<ListItem> listItems;//create custom ListItem class
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
     private String userId = "";
-    List<String> savedItemKeys =new ArrayList<>();
+    List<String> savedItemKeys = new ArrayList<>();
 
 
-    public SavedNewsAdapter(Context context, List<ListItem> listItem) {
-        this.context = context;
+    public SavedNewsAdapter(Activity con, List<ListItem> listItem) {
+        this.context = con;
         listItems = listItem;
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
         // get reference to 'users' node
         mFirebaseDatabase = mFirebaseInstance.getReference("savedNews");
-        SharedPreferences pref = context.getSharedPreferences("_androidId", context.MODE_PRIVATE);
+
+        //SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(con);
+        SharedPreferences pref = con.getSharedPreferences("_androidId", context.MODE_PRIVATE);
         String android_id = pref.getString("android_id", "0");
         mFirebaseDatabase = mFirebaseDatabase.child(android_id);
-        
+
     }
 
     @Override
     public SavedNewsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_list_row, parent, false);
-
         return new ViewHolder(v);
     }
 
@@ -77,7 +81,6 @@ public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.View
     public void onBindViewHolder(SavedNewsAdapter.ViewHolder holder, int position) {
         ListItem listItem = listItems.get(position);
         holder.title.setText(listItem.getTitle());
-
         //  holder.txtTime.setText(listItem.getPublishedAt());
         holder.txtTime.setText(getTimeInFormat(listItem.getPublishedAt()));
         //  if(!(listItem.getImage().equals("null")))
@@ -87,8 +90,8 @@ public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.View
                 .error(R.drawable.error)
                 //.resize(800, 600)
                 .into(holder.newsImg);
-        addSavedNewsChangeListener(holder.ivSavedIcon,listItem.getPublishedAt());
-        holder.ivSavedIcon.setTag(R.drawable.bookmark);
+        addSavedNewsChangeListener(holder.ivSavedIcon, listItem.getPublishedAt());
+        holder.ivSavedIcon.setTag(R.drawable.bookmark_set);
         //  else
         //     holder.newsImg.setVisibility(View.GONE);
     }
@@ -121,12 +124,11 @@ public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.View
         public void onClick(View view) {
             int position = getAdapterPosition();
             ListItem item = listItems.get(position);
-
             if (view.getId() == R.id.txtShare) {
                 shareTextUrl(item.getUrl());
             } else if (view.getId() == R.id.txtSavedIcon) {
-                ImageView iv =(ImageView)view;
-                switch ((Integer)iv.getTag()){
+                ImageView iv = (ImageView) view;
+                switch ((Integer) iv.getTag()) {
                     case R.drawable.bookmark:
                         iv.setBackgroundResource(R.drawable.bookmark_set);
                         iv.setTag(R.drawable.bookmark_set);
@@ -138,6 +140,9 @@ public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.View
                         deleteNews(item.getPublishedAt());
                         break;
                 }
+                listItems.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, listItems.size());
             } else {
                 Intent browserIntent = new Intent(context.getApplicationContext(), ViewNewsActivity.class);
                 browserIntent.putExtra("url", item.getUrl() + "");
@@ -214,6 +219,7 @@ public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.View
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
 
             }
+
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
             }
@@ -222,10 +228,10 @@ public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.View
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 if (savedItemKeys.contains(dataSnapshot.getKey()))
                     savedItemKeys.remove(savedItemKeys.indexOf(dataSnapshot.getKey()));
-                ivSavedIcon.setImageResource(R.drawable.bookmark);
-                ivSavedIcon.setTag(R.drawable.bookmark);
+
 
             }
+
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
             }

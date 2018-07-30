@@ -2,13 +2,16 @@ package com.rajiv.a300269668.newsapp;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +48,7 @@ import Model.SavedNews;
  */
 public class TabFragment extends Fragment {
     public static String category = "";
-
+    private Activity context;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<ListItem> listItems;
@@ -55,7 +58,9 @@ public class TabFragment extends Fragment {
     List<ListItem> savedItemKeys = new ArrayList<>();
     int position;
     String searchText;
-
+    private TextView txtMessage;
+    Toolbar mToolbar;
+    LinearLayoutManager mLayoutManager;
     public TabFragment() {
         // Required empty public constructor
     }
@@ -87,14 +92,16 @@ public class TabFragment extends Fragment {
 
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Loading...");
-
-
+        txtMessage = (TextView) view.findViewById(R.id.txtMessage);
+        mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        mToolbar.getMenu().findItem(R.id.search).setVisible(true);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleView1);
         recyclerView.setHasFixedSize(true);
         //every item has fixed size
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+         mLayoutManager = new LinearLayoutManager(getContext());
+
         //recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
@@ -103,6 +110,7 @@ public class TabFragment extends Fragment {
         SharedPreferences pref = getActivity().getSharedPreferences("_androidId", Context.MODE_PRIVATE);
         String android_id = pref.getString("android_id", "0");
         mFirebaseDatabase = mFirebaseDatabase.child(android_id);
+        this.context = getActivity();
         switch (position) {
             case 0:
                 category = "business";
@@ -142,6 +150,8 @@ public class TabFragment extends Fragment {
                 break;
             case 11:
                 getSavedNews();
+                mToolbar.getMenu().findItem(R.id.search).setVisible(false);
+                mToolbar.setTitle("Saved News");
                 break;
             default:
                 category = "";
@@ -156,8 +166,8 @@ public class TabFragment extends Fragment {
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    SavedNews sn=new SavedNews();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    SavedNews sn = new SavedNews();
                     sn.setSavedItem(postSnapshot.getValue(ListItem.class));
 
                     ListItem listItem = new ListItem(sn.getSavedItem().getTitle()
@@ -169,7 +179,10 @@ public class TabFragment extends Fragment {
                     savedItemKeys.add(listItem);
                     // TODO: handle the post
                 }
-                adapter = new SavedNewsAdapter(getContext(), savedItemKeys);
+                adapter = new SavedNewsAdapter(context, savedItemKeys);
+                mLayoutManager.setReverseLayout(true);
+                mLayoutManager.setStackFromEnd(true);
+                recyclerView.setLayoutManager(mLayoutManager);
                 recyclerView.setAdapter(adapter);
 
 
@@ -181,6 +194,11 @@ public class TabFragment extends Fragment {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                if(savedItemKeys.size()==0){
+                    txtMessage.setText("You haven't saved any articles.");
+                }else{
+                    txtMessage.setText("");
+                }
             }
 
             @Override
@@ -194,6 +212,11 @@ public class TabFragment extends Fragment {
         };
         mFirebaseDatabase.addChildEventListener(childEventListener);
         progressDialog.dismiss();
+        if(savedItemKeys.size()==0){
+            txtMessage.setText("You haven't saved any articles.");
+        }else{
+            txtMessage.setText("");
+        }
     }
 
     public void getNewsByCategory(String category) {
@@ -224,7 +247,15 @@ public class TabFragment extends Fragment {
                             );
                             listItems.add(listItem);
                         }
+                        if(listItems.size()==0){
+                            txtMessage.setText("Sorry, No news available!");
+                        }else{
+                            txtMessage.setText("");
+                        }
                         adapter = new MyAdapter(getContext(), listItems);
+                        mLayoutManager.setReverseLayout(false);
+                        mLayoutManager.setStackFromEnd(false);
+                        recyclerView.setLayoutManager(mLayoutManager);
                         recyclerView.setAdapter(adapter);
 
                         progressDialog.dismiss();
@@ -277,7 +308,15 @@ public class TabFragment extends Fragment {
                             );
                             listItems.add(listItem);
                         }
+                        if(listItems.size()==0){
+                            txtMessage.setText("Sorry, No news available, Search something else!");
+                        }else{
+                            txtMessage.setText("");
+                        }
                         adapter = new MyAdapter(getContext(), listItems);
+                        mLayoutManager.setReverseLayout(false);
+                        mLayoutManager.setStackFromEnd(false);
+                        recyclerView.setLayoutManager(mLayoutManager);
                         recyclerView.setAdapter(adapter);
 
                         progressDialog.dismiss();
