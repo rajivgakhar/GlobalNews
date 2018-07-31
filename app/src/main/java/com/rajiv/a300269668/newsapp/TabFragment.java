@@ -6,7 +6,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -61,6 +64,7 @@ public class TabFragment extends Fragment {
     private TextView txtMessage;
     Toolbar mToolbar;
     LinearLayoutManager mLayoutManager;
+
     public TabFragment() {
         // Required empty public constructor
     }
@@ -100,7 +104,7 @@ public class TabFragment extends Fragment {
         //every item has fixed size
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-         mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager = new LinearLayoutManager(getContext());
 
         //recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
 
@@ -149,7 +153,7 @@ public class TabFragment extends Fragment {
                 getNewsBySearch("");
                 break;
             case 11:
-                getSavedNews();
+                getSavedNews(view);
                 mToolbar.getMenu().findItem(R.id.search).setVisible(false);
                 mToolbar.setTitle("Saved News");
                 break;
@@ -161,7 +165,7 @@ public class TabFragment extends Fragment {
         return view;
     }
 
-    private void getSavedNews() {
+    private void getSavedNews(final View view) {
         progressDialog.show();
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
@@ -179,6 +183,9 @@ public class TabFragment extends Fragment {
                     savedItemKeys.add(listItem);
                     // TODO: handle the post
                 }
+
+
+
                 adapter = new SavedNewsAdapter(context, savedItemKeys);
                 mLayoutManager.setReverseLayout(true);
                 mLayoutManager.setStackFromEnd(true);
@@ -194,9 +201,9 @@ public class TabFragment extends Fragment {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                if(savedItemKeys.size()==0){
+                if (savedItemKeys.size() == 0) {
                     txtMessage.setText("You haven't saved any articles.");
-                }else{
+                } else {
                     txtMessage.setText("");
                 }
             }
@@ -212,9 +219,9 @@ public class TabFragment extends Fragment {
         };
         mFirebaseDatabase.addChildEventListener(childEventListener);
         progressDialog.dismiss();
-        if(savedItemKeys.size()==0){
+        if (savedItemKeys.size() == 0) {
             txtMessage.setText("You haven't saved any articles.");
-        }else{
+        } else {
             txtMessage.setText("");
         }
     }
@@ -247,9 +254,9 @@ public class TabFragment extends Fragment {
                             );
                             listItems.add(listItem);
                         }
-                        if(listItems.size()==0){
+                        if (listItems.size() == 0) {
                             txtMessage.setText("Sorry, No news available!");
-                        }else{
+                        } else {
                             txtMessage.setText("");
                         }
                         adapter = new MyAdapter(getContext(), listItems);
@@ -262,9 +269,8 @@ public class TabFragment extends Fragment {
 
                     }
 
-
                 } catch (Exception e) {
-                    Log.e("dateaaaaaaaaaaaaaa", "FAILEDDDDDD");
+
                 }
 
             }
@@ -283,8 +289,7 @@ public class TabFragment extends Fragment {
 
     public void getNewsBySearch(String category) {
         String url = "https://newsapi.org/v2/everything?q=" + searchText +
-                "&apiKey=a119b4537d944624af08fb67a63e46ca";
-        Log.e("urllll", url + "");
+                "&apiKey=a119b4537d944624af08fb67a63e46ca&language=en";
         listItems = new ArrayList<>();
         progressDialog.show();
         Map<String, String> params = new HashMap<String, String>();
@@ -308,9 +313,9 @@ public class TabFragment extends Fragment {
                             );
                             listItems.add(listItem);
                         }
-                        if(listItems.size()==0){
+                        if (listItems.size() == 0) {
                             txtMessage.setText("Sorry, No news available, Search something else!");
-                        }else{
+                        } else {
                             txtMessage.setText("");
                         }
                         adapter = new MyAdapter(getContext(), listItems);
@@ -337,7 +342,7 @@ public class TabFragment extends Fragment {
             }
         });
 
-
+        progressDialog.dismiss();
         // Adding request to request queue
         MyApplication.getInstance().addToReqQueue(user_request);
     }

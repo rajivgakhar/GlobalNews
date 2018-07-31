@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -138,6 +139,7 @@ public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.View
                         iv.setBackgroundResource(R.drawable.bookmark);
                         iv.setTag(R.drawable.bookmark);
                         deleteNews(item.getPublishedAt());
+                        Snackbar.make(view, "Articles unsaved!", Toast.LENGTH_SHORT).show();
                         break;
                 }
                 listItems.remove(position);

@@ -57,16 +57,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         selectedFragment = new TabFragment(100);
                         transaction.replace(R.id.frame_layout, selectedFragment);
                         mToolbar.setTitle("Global News");
+                        if(actionMode!=null)
+                        actionMode.finish();
                         break;
                     case R.id.saved:
                         selectedFragment = new TabFragment(11);
                         transaction.replace(R.id.frame_layout, selectedFragment);
                         mToolbar.setTitle("Saved News");
+                        if(actionMode!=null)
+                        actionMode.finish();
                         break;
                     case R.id.sections:
                         sectionFragment = new SectionFragment();
                         transaction.replace(R.id.frame_layout, sectionFragment);
                         mToolbar.setTitle("Categories");
+                        if(actionMode!=null)
+                        actionMode.finish();
                         break;
                 }
                 transaction.commit();
@@ -111,9 +117,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     editText.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            if(count>1) {
+                            if(count>0) {
                                 String searchText = editText.getText().toString().trim();
                                 selectedFragment = new TabFragment(searchText, 10);
+                                // TODO Auto-generated method stub
+                                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                                transaction.replace(R.id.frame_layout, selectedFragment);
+                                transaction.commit();
+                            }else{
+                                selectedFragment = new TabFragment( 100);
                                 // TODO Auto-generated method stub
                                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                                 transaction.replace(R.id.frame_layout, selectedFragment);
@@ -162,7 +174,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                 @Override
                 public void onDestroyActionMode(ActionMode actionMode) {
-
+                    selectedFragment = new TabFragment( 100);
+                    // TODO Auto-generated method stub
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frame_layout, selectedFragment);
+                    transaction.commit();
                 }
             }
 
@@ -199,6 +215,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.top_stories:
                 selectedFragment = new TabFragment(100);
                 mToolbar.setTitle("Global News");
+
                 transaction.replace(R.id.frame_layout, selectedFragment);
                 break;
             case R.id.saved:

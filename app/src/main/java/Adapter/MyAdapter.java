@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -116,26 +118,52 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         }
 
         @Override
-        public void onClick(View view) {
+        public void onClick(final View view) {
             int position = getAdapterPosition();
-            ListItem item = listItems.get(position);
+            final ListItem item = listItems.get(position);
 
             if (view.getId() == R.id.txtShare) {
                 shareTextUrl(item.getUrl());
             } else if (view.getId() == R.id.txtSavedIcon) {
-                ImageView iv = (ImageView) view;
-                Log.e("checkcTag", view.getTag().toString());
+                final ImageView iv = (ImageView) view;
                 switch ((Integer) view.getTag()) {
                     case R.drawable.bookmark:
                         iv.setBackgroundResource(R.drawable.bookmark_set);
                         iv.setTag(R.drawable.bookmark_set);
                         saveNews(item);
+                        final Snackbar snackbar = Snackbar.make(view, "Article saved!", Toast.LENGTH_SHORT);
+                        snackbar.setActionTextColor(Color.argb(255,218,67,54));
+                        snackbar.setAction("Undo", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view1) {
+                                deleteNews(item.getPublishedAt());
+                                iv.setBackgroundResource(R.drawable.bookmark);
+                                iv.setTag(R.drawable.bookmark);
+
+                                Snackbar.make(view, "Articles unsaved!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        snackbar.show();
                         break;
                     case R.drawable.bookmark_set:
                         iv.setBackgroundResource(R.drawable.bookmark);
                         iv.setTag(R.drawable.bookmark);
                         deleteNews(item.getPublishedAt());
-                        //addSavedNewsChangeListener(iv, item.getPublishedAt());
+
+
+                        final Snackbar snackbar2 = Snackbar.make(view, "Article unsaved!", Toast.LENGTH_SHORT);
+                        snackbar2.setActionTextColor(Color.argb(255,218,67,54));
+                        snackbar2.setAction("Undo", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view1) {
+                                saveNews(item);
+                                iv.setBackgroundResource(R.drawable.bookmark_set);
+                                iv.setTag(R.drawable.bookmark_set);
+
+                                Snackbar.make(view, "Articles saved!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        snackbar2.show();
                         break;
                 }
             } else {
