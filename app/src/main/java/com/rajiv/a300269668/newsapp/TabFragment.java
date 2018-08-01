@@ -289,7 +289,7 @@ public class TabFragment extends Fragment {
 
     public void getNewsBySearch(String category) {
         String url = "https://newsapi.org/v2/everything?q=" + searchText +
-                "&apiKey=a119b4537d944624af08fb67a63e46ca&language=en";
+                "&apiKey=a119b4537d944624af08fb67a63e46ca&language=en&sortBy=publishedAt";
         listItems = new ArrayList<>();
         progressDialog.show();
         Map<String, String> params = new HashMap<String, String>();

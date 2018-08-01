@@ -80,17 +80,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         //  holder.txtTime.setText(listItem.getPublishedAt());
         holder.txtTime.setText(getTimeInFormat(listItem.getPublishedAt()));
-        //  if(!(listItem.getImage().equals("null")))
-        Picasso.get()
-                .load(listItem.getImage())
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.error)
-                //.resize(800, 600)
-                .into(holder.newsImg);
+        if (!(listItem.getImage().equals("null"))) {
+            Picasso.get()
+                    .load(listItem.getImage())
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.error)
+                    //.resize(800, 600)
+                    .into(holder.newsImg);
+        } else {
+            holder.newsImg.setVisibility(View.GONE);
+        }
         addSavedNewsChangeListener(holder.ivSavedIcon, listItem.getPublishedAt());
         holder.ivSavedIcon.setTag(R.drawable.bookmark);
-        //  else
-        //     holder.newsImg.setVisibility(View.GONE);
     }
 
     @Override
@@ -132,7 +133,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                         iv.setTag(R.drawable.bookmark_set);
                         saveNews(item);
                         final Snackbar snackbar = Snackbar.make(view, "Article saved!", Toast.LENGTH_SHORT);
-                        snackbar.setActionTextColor(Color.argb(255,218,67,54));
+                        snackbar.setActionTextColor(Color.argb(255, 218, 67, 54));
                         snackbar.setAction("Undo", new View.OnClickListener() {
                             @Override
                             public void onClick(View view1) {
@@ -152,7 +153,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
 
                         final Snackbar snackbar2 = Snackbar.make(view, "Article unsaved!", Toast.LENGTH_SHORT);
-                        snackbar2.setActionTextColor(Color.argb(255,218,67,54));
+                        snackbar2.setActionTextColor(Color.argb(255, 218, 67, 54));
                         snackbar2.setAction("Undo", new View.OnClickListener() {
                             @Override
                             public void onClick(View view1) {
@@ -254,8 +255,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 if (savedItemKeys.contains(dataSnapshot.getKey()))
                     savedItemKeys.remove(savedItemKeys.indexOf(dataSnapshot.getKey()));
-                    ivSavedIcon.setImageResource(R.drawable.bookmark);
-                    ivSavedIcon.setTag(R.drawable.bookmark);
+                ivSavedIcon.setImageResource(R.drawable.bookmark);
+                ivSavedIcon.setTag(R.drawable.bookmark);
 
             }
 

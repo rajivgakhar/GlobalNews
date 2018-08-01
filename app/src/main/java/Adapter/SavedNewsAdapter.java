@@ -84,17 +84,16 @@ public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.View
         holder.title.setText(listItem.getTitle());
         //  holder.txtTime.setText(listItem.getPublishedAt());
         holder.txtTime.setText(getTimeInFormat(listItem.getPublishedAt()));
-        //  if(!(listItem.getImage().equals("null")))
-        Picasso.get()
-                .load(listItem.getImage())
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.error)
-                //.resize(800, 600)
-                .into(holder.newsImg);
+            Picasso.get()
+                    .load(listItem.getImage())
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.no_image)
+                    //.resize(800, 600)
+                    .into(holder.newsImg);
+
         addSavedNewsChangeListener(holder.ivSavedIcon, listItem.getPublishedAt());
         holder.ivSavedIcon.setTag(R.drawable.bookmark_set);
-        //  else
-        //     holder.newsImg.setVisibility(View.GONE);
+
     }
 
     @Override

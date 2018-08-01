@@ -21,7 +21,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".ViewNewsActivity" />
-        <activity android:name=".MainActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".FeedbackActivity"></activity>
     </application>

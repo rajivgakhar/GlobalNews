@@ -15,7 +15,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="105dp"
                 android:layout_toLeftOf="@+id/newsImage"
                 android:orientation="vertical"
                 android:padding="5dp">
@@ -40,8 +40,9 @@
                     <TextView
                         android:id="@+id/txtTime"
                         android:gravity="bottom"
+                        android:layout_weight="1"
                         android:layout_marginBottom="5dp"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="2 hrs ago" />
 
@@ -57,6 +58,7 @@
                     <ImageView
                         android:id="@+id/txtSavedIcon"
                         android:layout_width="27dp"
+                        android:layout_marginRight="5dp"
                         android:layout_height="30dp"
                         android:layout_toStartOf="@+id/txtShare"
                         android:background="@drawable/bookmark_set" />
@@ -67,8 +69,8 @@
 
             <ImageView
                 android:id="@+id/newsImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="105dp"
+                android:layout_height="105dp"
                 android:layout_alignParentRight="true"
                 android:scaleType="fitXY" />
 
