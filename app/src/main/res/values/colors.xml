@@ -4,7 +4,8 @@
     <color name="colorPrimaryDark">#9c3026</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="navColor">#da4336</color>
+    <color name="navSelectedColor">#da4336</color>
+    <color name="navColor">#464545</color>
     <color name="white">#ffffff</color>
     <color name="sectionHeader">#9e2d2c2c</color>
 </resources>

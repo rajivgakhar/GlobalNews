@@ -103,7 +103,6 @@ public class FeedbackActivity extends AppCompatActivity {
                 finish();
             }
         });
-        //mToolbar.inflateMenu(R.menu.menu_main);
     }
 
     private void initializeWidgets() {
@@ -199,7 +198,7 @@ public class FeedbackActivity extends AppCompatActivity {
         mFirebaseDatabase.addChildEventListener(childEventListener);
 
         if (listItems.size() == 0) {
-            // txtMessage.setText("You haven't saved any articles.");
+            // txtMessage.setText("You haven't  any review.");
         } else {
             // txtMessage.setText("");
         }

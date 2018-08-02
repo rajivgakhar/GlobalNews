@@ -1,11 +1,14 @@
 package com.rajiv.a300269668.newsapp;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -21,6 +24,7 @@ import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -32,6 +36,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private SectionFragment sectionFragment = null;
     private DrawerLayout mDrawerLayout;
     ActionMode actionMode;
+    BottomNavigationMenuView menuView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,9 +44,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setupToolbarMenu();
         setupNavigationDrawerMenu();
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+        final BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.navigation);
-
+         menuView = (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
 
         selectedFragment = new TabFragment(100);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -49,6 +54,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -215,50 +221,54 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.top_stories:
                 selectedFragment = new TabFragment(100);
                 mToolbar.setTitle("Global News");
-
+                menuView.getChildAt(0).performClick();
                 transaction.replace(R.id.frame_layout, selectedFragment);
                 break;
             case R.id.saved:
                 selectedFragment = new TabFragment(11);
                 transaction.replace(R.id.frame_layout, selectedFragment);
+                menuView.getChildAt(1).performClick();
                 mToolbar.setTitle("Saved News");
                 break;
             case R.id.business:
                 selectedFragment = new TabFragment(0);
                 mToolbar.setTitle("Business");
                 transaction.replace(R.id.frame_layout, selectedFragment);
+                menuView.getChildAt(2).performClick();
                 break;
             case R.id.entertainment:
                 selectedFragment = new TabFragment(1);
                 mToolbar.setTitle("Entertainment");
                 transaction.replace(R.id.frame_layout, selectedFragment);
+                menuView.getChildAt(2).performClick();
                 break;
             case R.id.health:
                 selectedFragment = new TabFragment(3);
                 mToolbar.setTitle("Health");
                 transaction.replace(R.id.frame_layout, selectedFragment);
+                menuView.getChildAt(2).performClick();
                 break;
             case R.id.science:
                 selectedFragment = new TabFragment(4);
                 mToolbar.setTitle("Science");
                 transaction.replace(R.id.frame_layout, selectedFragment);
+                menuView.getChildAt(2).performClick();
                 break;
             case R.id.sports:
                 selectedFragment = new TabFragment(5);
                 mToolbar.setTitle("Sports");
                 transaction.replace(R.id.frame_layout, selectedFragment);
+                menuView.getChildAt(2).performClick();
                 break;
             case R.id.technology:
                 selectedFragment = new TabFragment(6);
                 mToolbar.setTitle("Technology");
                 transaction.replace(R.id.frame_layout, selectedFragment);
+                menuView.getChildAt(2).performClick();
                 break;
             case R.id.settings:
                 break;
             case R.id.sendfeedback:
-                //feedbackFragment = new FeedbackFragment();
-               // mToolbar.setTitle("Feedback");
-               // transaction.replace(R.id.frame_layout, feedbackFragment);
                 startActivity(new Intent(HomeActivity.this,FeedbackActivity.class));
                 break;
         }

@@ -78,14 +78,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         ListItem listItem = listItems.get(position);
         holder.title.setText(listItem.getTitle());
 
-        //  holder.txtTime.setText(listItem.getPublishedAt());
         holder.txtTime.setText(getTimeInFormat(listItem.getPublishedAt()));
         if (!(listItem.getImage().equals("null"))) {
             Picasso.get()
                     .load(listItem.getImage())
                     .placeholder(R.drawable.placeholder)
-                    .error(R.drawable.error)
-                    //.resize(800, 600)
+                    .error(R.drawable.no_image)
                     .into(holder.newsImg);
         } else {
             holder.newsImg.setVisibility(View.GONE);
@@ -140,7 +138,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                                 deleteNews(item.getPublishedAt());
                                 iv.setBackgroundResource(R.drawable.bookmark);
                                 iv.setTag(R.drawable.bookmark);
-
                                 Snackbar.make(view, "Articles unsaved!", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -160,7 +157,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                                 saveNews(item);
                                 iv.setBackgroundResource(R.drawable.bookmark_set);
                                 iv.setTag(R.drawable.bookmark_set);
-
                                 Snackbar.make(view, "Articles saved!", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -215,9 +211,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
         share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-
-        // Add data to the intent, the receiving app will decide
-        // what to do with it.
         share.putExtra(Intent.EXTRA_SUBJECT, "Share News");
         share.putExtra(Intent.EXTRA_TEXT, url + "");
 
@@ -257,7 +250,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     savedItemKeys.remove(savedItemKeys.indexOf(dataSnapshot.getKey()));
                 ivSavedIcon.setImageResource(R.drawable.bookmark);
                 ivSavedIcon.setTag(R.drawable.bookmark);
-
             }
 
             @Override

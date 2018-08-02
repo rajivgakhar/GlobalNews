@@ -4,9 +4,6 @@ import android.support.v7.widget.Toolbar;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-/**
- * Created by mom on 2018-06-06.
- */
 
 public class onViewClient extends WebViewClient {
 

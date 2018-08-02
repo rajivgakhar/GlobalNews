@@ -62,10 +62,7 @@ public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.View
         listItems = listItem;
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
-        // get reference to 'users' node
         mFirebaseDatabase = mFirebaseInstance.getReference("savedNews");
-
-        //SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(con);
         SharedPreferences pref = con.getSharedPreferences("_androidId", context.MODE_PRIVATE);
         String android_id = pref.getString("android_id", "0");
         mFirebaseDatabase = mFirebaseDatabase.child(android_id);
@@ -82,13 +79,11 @@ public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.View
     public void onBindViewHolder(SavedNewsAdapter.ViewHolder holder, int position) {
         ListItem listItem = listItems.get(position);
         holder.title.setText(listItem.getTitle());
-        //  holder.txtTime.setText(listItem.getPublishedAt());
         holder.txtTime.setText(getTimeInFormat(listItem.getPublishedAt()));
             Picasso.get()
                     .load(listItem.getImage())
                     .placeholder(R.drawable.placeholder)
                     .error(R.drawable.no_image)
-                    //.resize(800, 600)
                     .into(holder.newsImg);
 
         addSavedNewsChangeListener(holder.ivSavedIcon, listItem.getPublishedAt());

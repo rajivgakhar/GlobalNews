@@ -50,13 +50,11 @@ public class SectionAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup viewGroup) {
         LayoutInflater inflater=context.getLayoutInflater();
         if(view==null){
-            //pick layout from layout
             view=inflater.inflate(R.layout.layout_sections,null);
         }
         TextView txt=(TextView)view.findViewById(R.id.txtHeadings);
         ImageView iv=(ImageView)view.findViewById(R.id.ivSections);
         iv.setImageResource(mThumbIds[position]);
-        //populate text
         txt.setText(mHeadings[position]);
         return view;
     }
