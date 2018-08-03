@@ -52,7 +52,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private FirebaseDatabase mFirebaseInstance;
     private String userId = "";
     List<String> savedItemKeys = new ArrayList<>();
-    static ImageView ivSavedIcon;
+    ImageView ivSavedIcon;
     SharedPreferences pref;
     String comp_layout="";
 
@@ -130,6 +130,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             newsImg.setOnClickListener(this);
             title.setOnClickListener(this);
             ivSavedIcon.setOnClickListener(this);
+            if(((Integer)ivSavedIcon.getTag()+"").equals("null"))
+                ivSavedIcon.setTag(R.drawable.bookmark);
         }
 
         @Override
@@ -161,10 +163,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                             snackbar.show();
                             break;
                         case R.drawable.bookmark_set:
+
                             view.setBackgroundResource(R.drawable.bookmark);
                             view.setTag(R.drawable.bookmark);
                             deleteNews(item.getPublishedAt());
-
                             final Snackbar snackbar2 = Snackbar.make(view, "Article unsaved!", Toast.LENGTH_SHORT);
                             snackbar2.setActionTextColor(Color.argb(255, 218, 67, 54));
                             snackbar2.setAction("Undo", new View.OnClickListener() {
@@ -255,6 +257,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     if (!savedItemKeys.contains(ds.getKey()))
                         savedItemKeys.add(ds.getKey());
                     if (savedItemKeys.contains(finalPublishedAt)) {
+                        Log.e("checkSet",finalPublishedAt+"");
                         ivSavedIcon.setImageResource(R.drawable.bookmark_set);
                         ivSavedIcon.setTag(R.drawable.bookmark_set);
                     }else{

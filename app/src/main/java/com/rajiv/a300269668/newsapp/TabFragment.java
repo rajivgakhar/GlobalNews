@@ -43,6 +43,7 @@ import java.util.Map;
 import Adapter.MyAdapter;
 import Adapter.SavedNewsAdapter;
 import Model.ListItem;
+import Model.Region;
 import Model.SavedNews;
 
 
@@ -64,6 +65,7 @@ public class TabFragment extends Fragment {
     private TextView txtMessage;
     Toolbar mToolbar;
     LinearLayoutManager mLayoutManager;
+    SharedPreferences pref;
 
     public TabFragment() {
         // Required empty public constructor
@@ -111,7 +113,7 @@ public class TabFragment extends Fragment {
         mFirebaseInstance = FirebaseDatabase.getInstance();
         // get reference to 'users' node
         mFirebaseDatabase = mFirebaseInstance.getReference("savedNews");
-        SharedPreferences pref = getActivity().getSharedPreferences("_androidId", Context.MODE_PRIVATE);
+        pref = getActivity().getSharedPreferences("_androidId", Context.MODE_PRIVATE);
         String android_id = pref.getString("android_id", "0");
         mFirebaseDatabase = mFirebaseDatabase.child(android_id);
         this.context = getActivity();
@@ -181,13 +183,16 @@ public class TabFragment extends Fragment {
                 }
 
 
-
                 adapter = new SavedNewsAdapter(context, savedItemKeys);
                 mLayoutManager.setReverseLayout(true);
                 mLayoutManager.setStackFromEnd(true);
                 recyclerView.setLayoutManager(mLayoutManager);
                 recyclerView.setAdapter(adapter);
-
+                if (savedItemKeys.size() == 0) {
+                    txtMessage.setText("You haven't saved any articles.");
+                } else {
+                    txtMessage.setText("");
+                }
 
             }
 
@@ -223,7 +228,12 @@ public class TabFragment extends Fragment {
     }
 
     public void getNewsByCategory(String category) {
-        String url = "https://newsapi.org/v2/top-headlines?country=ca" +
+        String selectedR = pref.getString("selectedRegion", "ca");
+        Region region = new Region();
+        String shortlbl = "ca";
+        if (!selectedR.equals("ca"))
+            shortlbl = region.getShortLabel(selectedR);
+        String url = "https://newsapi.org/v2/top-headlines?country=" + shortlbl +
                 "&apiKey=a119b4537d944624af08fb67a63e46ca" +
                 "&category=" + category;
         Log.e("urllll", url + "");

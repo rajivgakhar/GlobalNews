@@ -6,4 +6,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+
+    <string-array name="regions">
+        <item>Canada</item>
+        <item>US</item>
+        <item>India</item>
+        <item>Japan</item>
+    </string-array>
+    <string name="selectRegion">Select Region</string>
 </resources>
