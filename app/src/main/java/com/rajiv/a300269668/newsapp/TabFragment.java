@@ -124,10 +124,6 @@ public class TabFragment extends Fragment {
             case 1:
                 category = "entertainment";
                 getNewsByCategory(category);
-                //CookieManager.getInstance().setCookie("abc","abcd");
-                // String cookies = CookieManager.getInstance().getCookie("abc");
-
-                //   Log.e("ffff", "All the cookies in a string:" + CookieManager.getInstance().hasCookies()+cookies);
                 break;
             case 2:
                 category = "general";
@@ -282,7 +278,7 @@ public class TabFragment extends Fragment {
             }
         });
 
-
+        progressDialog.dismiss();
         // Adding request to request queue
         MyApplication.getInstance().addToReqQueue(user_request);
     }

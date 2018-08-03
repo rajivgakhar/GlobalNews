@@ -267,6 +267,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 menuView.getChildAt(2).performClick();
                 break;
             case R.id.settings:
+                startActivity(new Intent(HomeActivity.this,SettingActivity.class));
+                finish();
                 break;
             case R.id.sendfeedback:
                 startActivity(new Intent(HomeActivity.this,FeedbackActivity.class));

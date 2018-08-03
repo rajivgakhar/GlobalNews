@@ -88,6 +88,7 @@ public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.View
 
         addSavedNewsChangeListener(holder.ivSavedIcon, listItem.getPublishedAt());
         holder.ivSavedIcon.setTag(R.drawable.bookmark_set);
+        holder.ivSavedIcon.setBackgroundResource(R.drawable.bookmark_set);
 
     }
 

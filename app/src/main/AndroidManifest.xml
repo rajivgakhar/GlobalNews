@@ -3,7 +3,6 @@
     package="com.rajiv.a300269668.newsapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
 
     <application
         android:name=".MyApplication"
@@ -22,7 +21,8 @@
         </activity>
         <activity android:name=".ViewNewsActivity" />
         <activity android:name=".HomeActivity" />
-        <activity android:name=".FeedbackActivity"></activity>
+        <activity android:name=".FeedbackActivity" />
+        <activity android:name=".SettingActivity"></activity>
     </application>
 
 </manifest>

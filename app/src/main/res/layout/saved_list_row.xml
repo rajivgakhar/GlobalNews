@@ -61,7 +61,7 @@
                         android:layout_marginRight="5dp"
                         android:layout_height="30dp"
                         android:layout_toStartOf="@+id/txtShare"
-                        android:background="@drawable/bookmark_set" />
+                        android:background="@drawable/bookmark" />
 
                 </LinearLayout>
             </LinearLayout>

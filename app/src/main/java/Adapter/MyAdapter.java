@@ -52,7 +52,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private FirebaseDatabase mFirebaseInstance;
     private String userId = "";
     List<String> savedItemKeys = new ArrayList<>();
-
+    static ImageView ivSavedIcon;
+    SharedPreferences pref;
+    String comp_layout="";
 
     public MyAdapter(Context context, List<ListItem> listItem) {
         this.context = context;
@@ -61,14 +63,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         mFirebaseInstance = FirebaseDatabase.getInstance();
         // get reference to 'users' node
         mFirebaseDatabase = mFirebaseInstance.getReference("savedNews");
-        SharedPreferences pref = context.getSharedPreferences("_androidId", context.MODE_PRIVATE);
+        pref = context.getSharedPreferences("_androidId", context.MODE_PRIVATE);
         String android_id = pref.getString("android_id", "0");
         mFirebaseDatabase = mFirebaseDatabase.child(android_id);
     }
 
     @Override
     public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row, parent, false);
+        comp_layout=pref.getString("compactLayout","0");
+        View v;
+        if (comp_layout.equals("true")) {
+             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_list_row, parent, false);
+        }else{
+             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row, parent, false);
+        }
 
         return new ViewHolder(v);
     }
@@ -79,17 +87,25 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.title.setText(listItem.getTitle());
 
         holder.txtTime.setText(getTimeInFormat(listItem.getPublishedAt()));
-        if (!(listItem.getImage().equals("null"))) {
+        if(!(comp_layout.equals("true"))) {
+            if (!(listItem.getImage().equals("null"))) {
+                Picasso.get()
+                        .load(listItem.getImage())
+                        .placeholder(R.drawable.placeholder)
+                        .error(R.drawable.no_image)
+                        .into(holder.newsImg);
+            } else {
+                holder.newsImg.setVisibility(View.GONE);
+            }
+        }else{
             Picasso.get()
                     .load(listItem.getImage())
                     .placeholder(R.drawable.placeholder)
                     .error(R.drawable.no_image)
                     .into(holder.newsImg);
-        } else {
-            holder.newsImg.setVisibility(View.GONE);
         }
-        addSavedNewsChangeListener(holder.ivSavedIcon, listItem.getPublishedAt());
-        holder.ivSavedIcon.setTag(R.drawable.bookmark);
+        addSavedNewsChangeListener(ivSavedIcon, listItem.getPublishedAt());
+
     }
 
     @Override
@@ -101,7 +117,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public TextView title;
         public TextView txtTime, txtShare;
         public ImageView newsImg;
-        ImageView ivSavedIcon;
+        //static ImageView ivSavedIcon;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -124,44 +140,45 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             if (view.getId() == R.id.txtShare) {
                 shareTextUrl(item.getUrl());
             } else if (view.getId() == R.id.txtSavedIcon) {
-                final ImageView iv = (ImageView) view;
-                switch ((Integer) view.getTag()) {
-                    case R.drawable.bookmark:
-                        iv.setBackgroundResource(R.drawable.bookmark_set);
-                        iv.setTag(R.drawable.bookmark_set);
-                        saveNews(item);
-                        final Snackbar snackbar = Snackbar.make(view, "Article saved!", Toast.LENGTH_SHORT);
-                        snackbar.setActionTextColor(Color.argb(255, 218, 67, 54));
-                        snackbar.setAction("Undo", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view1) {
-                                deleteNews(item.getPublishedAt());
-                                iv.setBackgroundResource(R.drawable.bookmark);
-                                iv.setTag(R.drawable.bookmark);
-                                Snackbar.make(view, "Articles unsaved!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        snackbar.show();
-                        break;
-                    case R.drawable.bookmark_set:
-                        iv.setBackgroundResource(R.drawable.bookmark);
-                        iv.setTag(R.drawable.bookmark);
-                        deleteNews(item.getPublishedAt());
+                if(!((Integer)view.getTag()+"").equals("null")) {
+                    switch ((Integer) view.getTag()) {
 
+                        case R.drawable.bookmark:
+                            view.setBackgroundResource(R.drawable.bookmark_set);
+                            view.setTag(R.drawable.bookmark_set);
+                            saveNews(item);
+                            final Snackbar snackbar = Snackbar.make(view, "Article saved!", Toast.LENGTH_SHORT);
+                            snackbar.setActionTextColor(Color.argb(255, 218, 67, 54));
+                            snackbar.setAction("Undo", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view1) {
+                                    deleteNews(item.getPublishedAt());
+                                     view.setBackgroundResource(R.drawable.bookmark);
+                                      view.setTag(R.drawable.bookmark);
+                                    Snackbar.make(view, "Articles unsaved!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            snackbar.show();
+                            break;
+                        case R.drawable.bookmark_set:
+                            view.setBackgroundResource(R.drawable.bookmark);
+                            view.setTag(R.drawable.bookmark);
+                            deleteNews(item.getPublishedAt());
 
-                        final Snackbar snackbar2 = Snackbar.make(view, "Article unsaved!", Toast.LENGTH_SHORT);
-                        snackbar2.setActionTextColor(Color.argb(255, 218, 67, 54));
-                        snackbar2.setAction("Undo", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view1) {
-                                saveNews(item);
-                                iv.setBackgroundResource(R.drawable.bookmark_set);
-                                iv.setTag(R.drawable.bookmark_set);
-                                Snackbar.make(view, "Articles saved!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        snackbar2.show();
-                        break;
+                            final Snackbar snackbar2 = Snackbar.make(view, "Article unsaved!", Toast.LENGTH_SHORT);
+                            snackbar2.setActionTextColor(Color.argb(255, 218, 67, 54));
+                            snackbar2.setAction("Undo", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view1) {
+                                    saveNews(item);
+                                    view.setBackgroundResource(R.drawable.bookmark_set);
+                                     view.setTag(R.drawable.bookmark_set);
+                                    Snackbar.make(view, "Articles saved!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            snackbar2.show();
+                            break;
+                    }
                 }
             } else {
                 Intent browserIntent = new Intent(context.getApplicationContext(), ViewNewsActivity.class);
@@ -229,15 +246,35 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         publishedAt = publishedAt.replace("Z", " ");
 
         final String finalPublishedAt = publishedAt;
+
+        ValueEventListener valueEventListener= new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                    if (!savedItemKeys.contains(ds.getKey()))
+                        savedItemKeys.add(ds.getKey());
+                    if (savedItemKeys.contains(finalPublishedAt)) {
+                        ivSavedIcon.setImageResource(R.drawable.bookmark_set);
+                        ivSavedIcon.setTag(R.drawable.bookmark_set);
+                    }else{
+                        ivSavedIcon.setImageResource(R.drawable.bookmark);
+                        ivSavedIcon.setTag(R.drawable.bookmark);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        mFirebaseDatabase.addValueEventListener(valueEventListener);
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                if (!savedItemKeys.contains(dataSnapshot.getKey()))
-                    savedItemKeys.add(dataSnapshot.getKey());
-                if (savedItemKeys.contains(finalPublishedAt)) {
-                    ivSavedIcon.setImageResource(R.drawable.bookmark_set);
-                    ivSavedIcon.setTag(R.drawable.bookmark_set);
-                }
+
             }
 
             @Override
@@ -248,8 +285,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 if (savedItemKeys.contains(dataSnapshot.getKey()))
                     savedItemKeys.remove(savedItemKeys.indexOf(dataSnapshot.getKey()));
-                ivSavedIcon.setImageResource(R.drawable.bookmark);
-                ivSavedIcon.setTag(R.drawable.bookmark);
+               // ivSavedIcon.setImageResource(R.drawable.bookmark);
+                //ivSavedIcon.setTag(R.drawable.bookmark);
             }
 
             @Override
