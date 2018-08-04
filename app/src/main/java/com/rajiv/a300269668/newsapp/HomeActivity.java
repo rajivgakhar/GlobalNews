@@ -62,7 +62,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.top_stories:
                         selectedFragment = new TabFragment(100);
                         transaction.replace(R.id.frame_layout, selectedFragment);
-                        mToolbar.setTitle("Global News");
+                        mToolbar.setTitle("Top Stories");
                         if(actionMode!=null)
                         actionMode.finish();
                         break;
@@ -103,7 +103,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void setupToolbarMenu(){
         mToolbar=(Toolbar)findViewById(R.id.toolbar);
-        mToolbar.setTitle("Global News");
+        mToolbar.setTitle("Top Stories");
         mToolbar.inflateMenu(R.menu.menu_main);
 
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -118,8 +118,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     editText.setTextColor(Color.WHITE);
                     editText.setHint("Search here..");
                     editText.setHintTextColor(Color.WHITE);
-                    actionMode.setCustomView(editText);
 
+                    actionMode.setCustomView(editText);
+                    editText.requestFocus();
                     editText.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -131,7 +132,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                 transaction.replace(R.id.frame_layout, selectedFragment);
                                 transaction.commit();
                             }else{
-                                selectedFragment = new TabFragment( 100);
+                                selectedFragment = new TabFragment( 10);
                                 // TODO Auto-generated method stub
                                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                                 transaction.replace(R.id.frame_layout, selectedFragment);
@@ -141,8 +142,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                            // TODO Auto-generated method stub
+                           // TODO Auto-generated method stub
                         }
 
                         @Override
@@ -168,7 +168,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     switch (menuItem.getItemId()) {
                         case R.id.search:
                             String searchText = editText.getText().toString().trim();
-                            selectedFragment = new TabFragment(searchText,10);
+                            if(searchText.length()>0) {
+                                selectedFragment = new TabFragment(searchText, 10);
+                                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                                transaction.replace(R.id.frame_layout, selectedFragment);
+                                transaction.commit();
+                            }else{
+                                Toast.makeText(getApplicationContext(),"Type something to search",Toast.LENGTH_SHORT).show();
+                            }
                             break;
 
                     }
@@ -180,7 +187,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                 @Override
                 public void onDestroyActionMode(ActionMode actionMode) {
-                    selectedFragment = new TabFragment( 100);
+                    selectedFragment = new TabFragment( 10);
                     // TODO Auto-generated method stub
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.frame_layout, selectedFragment);
@@ -220,7 +227,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()){
             case R.id.top_stories:
                 selectedFragment = new TabFragment(100);
-                mToolbar.setTitle("Global News");
+                mToolbar.setTitle("Top Stories");
                 menuView.getChildAt(0).performClick();
                 transaction.replace(R.id.frame_layout, selectedFragment);
                 break;

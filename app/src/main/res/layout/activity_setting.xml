@@ -1,66 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-    <include layout="@layout/toolbar"
-        android:id="@+id/toolbar">
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar">
 
     </include>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:paddingLeft="20dp"
 
+    <LinearLayout
+        android:id="@+id/layoutLin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:paddingTop="30dp"
-        android:orientation="vertical">
+        android:paddingTop="40dp">
 
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Customize Theme"
             android:textAllCaps="true"
-            android:textSize="18sp"
-            android:text="Customize Theme" />
+            android:textSize="18sp" />
 
         <Switch
             android:id="@+id/layoutSwitch"
             android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="Compact Layout"
             android:textSize="18sp"
             android:thumbTint="@color/navSelectedColor" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="See more stories with smaller photos."
             android:textSize="14sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="25dp"
+            android:background="@color/navColor" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAllCaps="true"
-            android:textSize="18sp"
             android:layout_marginTop="25dp"
-            android:text="Change News Region" />
+            android:text="Change News Region"
+            android:textAllCaps="true"
+            android:textSize="18sp" />
 
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spinnerRegion"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
-            android:popupBackground="@color/colorPrimary"
             android:background="@drawable/spinner_back"
+            android:popupBackground="@color/colorPrimary"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="See stories of particular region."
             android:textSize="14sp" />
+
     </LinearLayout>
+
+    <View
+        android:id="@+id/horLine"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/navColor" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:text=" \u00a92018 RedHot News. All rights reserved."
+        android:textSize="14sp"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/textView" />
 </RelativeLayout>

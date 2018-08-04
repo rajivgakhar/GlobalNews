@@ -34,7 +34,7 @@ public class ViewNewsActivity extends AppCompatActivity {
     }
     private void setupToolbarMenu(){
         mToolbar=(Toolbar)findViewById(R.id.toolbar);
-        mToolbar.setTitle("Global News");
+        mToolbar.setTitle("RedHot News");
         mToolbar.setNavigationIcon(R.drawable.back_arrow);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

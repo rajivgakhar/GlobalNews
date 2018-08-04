@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:text="Global"
+        android:text="RedHot"
         android:textColor="@color/white"
         android:textSize="40sp"
         android:textStyle="italic" />

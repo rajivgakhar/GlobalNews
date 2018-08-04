@@ -54,7 +54,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     List<String> savedItemKeys = new ArrayList<>();
     ImageView ivSavedIcon;
     SharedPreferences pref;
-    String comp_layout="";
+    String comp_layout = "";
 
     public MyAdapter(Context context, List<ListItem> listItem) {
         this.context = context;
@@ -70,12 +70,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        comp_layout=pref.getString("compactLayout","0");
+        comp_layout = pref.getString("compactLayout", "0");
         View v;
         if (comp_layout.equals("true")) {
-             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_list_row, parent, false);
-        }else{
-             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row, parent, false);
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_list_row, parent, false);
+        } else {
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row, parent, false);
         }
 
         return new ViewHolder(v);
@@ -87,7 +87,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.title.setText(listItem.getTitle());
 
         holder.txtTime.setText(getTimeInFormat(listItem.getPublishedAt()));
-        if(!(comp_layout.equals("true"))) {
+        if (!(comp_layout.equals("true"))) {
             if (!(listItem.getImage().equals("null"))) {
                 Picasso.get()
                         .load(listItem.getImage())
@@ -97,12 +97,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             } else {
                 holder.newsImg.setVisibility(View.GONE);
             }
-        }else{
-            Picasso.get()
-                    .load(listItem.getImage())
-                    .placeholder(R.drawable.placeholder)
-                    .error(R.drawable.no_image)
-                    .into(holder.newsImg);
+        } else {
+           if (listItem.getImage().length() != 0) {
+                Picasso.get()
+                        .load(listItem.getImage() + "")
+                        .placeholder(R.drawable.placeholder)
+                        .error(R.drawable.no_image)
+                        .into(holder.newsImg);
+            } else {
+                Picasso.get()
+                        .load(R.drawable.no_image)
+                        .placeholder(R.drawable.placeholder)
+                        .error(R.drawable.no_image)
+                        .into(holder.newsImg);
+            }
         }
         addSavedNewsChangeListener(ivSavedIcon, listItem.getPublishedAt());
 
@@ -130,7 +138,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             newsImg.setOnClickListener(this);
             title.setOnClickListener(this);
             ivSavedIcon.setOnClickListener(this);
-            if(((Integer)ivSavedIcon.getTag()+"").equals("null"))
+            if (((Integer) ivSavedIcon.getTag() + "").equals("null"))
                 ivSavedIcon.setTag(R.drawable.bookmark);
         }
 
@@ -142,7 +150,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             if (view.getId() == R.id.txtShare) {
                 shareTextUrl(item.getUrl());
             } else if (view.getId() == R.id.txtSavedIcon) {
-                if(!((Integer)view.getTag()+"").equals("null")) {
+                if (!((Integer) view.getTag() + "").equals("null")) {
                     switch ((Integer) view.getTag()) {
 
                         case R.drawable.bookmark:
@@ -155,8 +163,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                                 @Override
                                 public void onClick(View view1) {
                                     deleteNews(item.getPublishedAt());
-                                     view.setBackgroundResource(R.drawable.bookmark);
-                                      view.setTag(R.drawable.bookmark);
+                                    view.setBackgroundResource(R.drawable.bookmark);
+                                    view.setTag(R.drawable.bookmark);
                                     Snackbar.make(view, "Articles unsaved!", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -174,7 +182,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                                 public void onClick(View view1) {
                                     saveNews(item);
                                     view.setBackgroundResource(R.drawable.bookmark_set);
-                                     view.setTag(R.drawable.bookmark_set);
+                                    view.setTag(R.drawable.bookmark_set);
                                     Snackbar.make(view, "Articles saved!", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -249,18 +257,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         final String finalPublishedAt = publishedAt;
 
-        ValueEventListener valueEventListener= new ValueEventListener() {
+        ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     if (!savedItemKeys.contains(ds.getKey()))
                         savedItemKeys.add(ds.getKey());
                     if (savedItemKeys.contains(finalPublishedAt)) {
-                        Log.e("checkSet",finalPublishedAt+"");
+                        Log.e("checkSet", finalPublishedAt + "");
                         ivSavedIcon.setImageResource(R.drawable.bookmark_set);
                         ivSavedIcon.setTag(R.drawable.bookmark_set);
-                    }else{
+                    } else {
                         ivSavedIcon.setImageResource(R.drawable.bookmark);
                         ivSavedIcon.setTag(R.drawable.bookmark);
                     }
@@ -288,7 +296,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 if (savedItemKeys.contains(dataSnapshot.getKey()))
                     savedItemKeys.remove(savedItemKeys.indexOf(dataSnapshot.getKey()));
-               // ivSavedIcon.setImageResource(R.drawable.bookmark);
+                // ivSavedIcon.setImageResource(R.drawable.bookmark);
                 //ivSavedIcon.setTag(R.drawable.bookmark);
             }
 

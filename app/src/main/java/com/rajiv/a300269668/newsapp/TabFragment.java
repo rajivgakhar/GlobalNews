@@ -75,7 +75,7 @@ public class TabFragment extends Fragment {
     public TabFragment(int pos) {
         // Required empty public constructor
         this.position = pos;
-
+        this.searchText = "";
     }
 
     @SuppressLint("ValidFragment")
@@ -121,34 +121,43 @@ public class TabFragment extends Fragment {
             case 0:
                 category = "business";
                 getNewsByCategory(category);
-
+                mToolbar.setTitle("Business");
                 break;
             case 1:
                 category = "entertainment";
                 getNewsByCategory(category);
+                mToolbar.setTitle("Entertainment");
                 break;
             case 2:
                 category = "general";
                 getNewsByCategory(category);
+                mToolbar.setTitle("General");
                 break;
             case 3:
                 category = "Health";
                 getNewsByCategory(category);
+                mToolbar.setTitle("Health");
                 break;
             case 4:
                 category = "Science";
                 getNewsByCategory(category);
+                mToolbar.setTitle("Science");
                 break;
             case 5:
                 category = "Sports";
                 getNewsByCategory(category);
+                mToolbar.setTitle("Sports");
                 break;
             case 6:
                 category = "Technology";
                 getNewsByCategory(category);
+                mToolbar.setTitle("Technology");
                 break;
             case 10:
-                getNewsBySearch("");
+                if (mToolbar.getTitle().toString().equals("Top Stories"))
+                    getNewsBySearch("");
+                else
+                    getNewsBySearch(mToolbar.getTitle().toString());
                 break;
             case 11:
                 getSavedNews(view);
@@ -236,7 +245,6 @@ public class TabFragment extends Fragment {
         String url = "https://newsapi.org/v2/top-headlines?country=" + shortlbl +
                 "&apiKey=a119b4537d944624af08fb67a63e46ca" +
                 "&category=" + category;
-        Log.e("urllll", url + "");
         listItems = new ArrayList<>();
         progressDialog.show();
         Map<String, String> params = new HashMap<String, String>();
@@ -294,8 +302,13 @@ public class TabFragment extends Fragment {
     }
 
     public void getNewsBySearch(String category) {
-        String url = "https://newsapi.org/v2/everything?q=" + searchText +
-                "&apiKey=a119b4537d944624af08fb67a63e46ca&language=en&sortBy=publishedAt";
+        String selectedR = pref.getString("selectedRegion", "ca");
+        Region region = new Region();
+        String shortlbl = "ca";
+        if (!selectedR.equals("ca"))
+            shortlbl = region.getShortLabel(selectedR);
+        String url = "https://newsapi.org/v2/top-headlines?q=" + searchText +
+                "&apiKey=a119b4537d944624af08fb67a63e46ca&country=" + shortlbl + "&category=" + category;
         listItems = new ArrayList<>();
         progressDialog.show();
         Map<String, String> params = new HashMap<String, String>();
