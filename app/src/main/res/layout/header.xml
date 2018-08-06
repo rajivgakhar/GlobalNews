@@ -17,7 +17,7 @@
         android:layout_weight="1"
         android:fontFamily="sans-serif-medium"
         android:gravity="bottom"
-        android:text="RedHot News"
+        android:text="News Zone"
         android:textColor="@color/white"
         android:textSize="20sp"
 

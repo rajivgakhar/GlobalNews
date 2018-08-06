@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -52,6 +53,7 @@ public class FeedbackActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<Feedback> listItems;
+    private TextView counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +115,7 @@ public class FeedbackActivity extends AppCompatActivity {
         inputName = (TextInputLayout) findViewById(R.id.inputName);
         inputEmail = (TextInputLayout) findViewById(R.id.inputEmail);
         inputComment = (TextInputLayout) findViewById(R.id.inputComment);
+        counter = (TextView) findViewById(R.id.feedbackCounter);
 
         btnSend = (Button) findViewById(R.id.btnSendFeed);
         mFirebaseInstance = FirebaseDatabase.getInstance();
@@ -173,6 +176,7 @@ public class FeedbackActivity extends AppCompatActivity {
                     listItems.add(listItem);
                 }
                 adapter = new FeedbackAdapter(getApplicationContext(), listItems);
+                counter.setText("Comments ("+listItems.size()+")");
                 recyclerView.setAdapter(adapter);
 
             }

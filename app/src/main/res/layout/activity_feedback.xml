@@ -72,6 +72,15 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:text="Send Feedback" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:id="@+id/feedbackCounter"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="2dp"
+            android:textStyle="bold"
+            android:text="Comments (0)"/>
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:id="@+id/recycleView"

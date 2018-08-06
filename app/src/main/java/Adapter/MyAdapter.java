@@ -91,6 +91,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             if (!(listItem.getImage().equals("null"))) {
                 Picasso.get()
                         .load(listItem.getImage())
+                        .resize(400,200)
                         .placeholder(R.drawable.placeholder)
                         .error(R.drawable.no_image)
                         .into(holder.newsImg);

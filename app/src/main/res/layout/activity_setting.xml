@@ -93,7 +93,7 @@
         android:layout_alignParentStart="true"
         android:gravity="center"
         android:layout_marginTop="5dp"
-        android:text=" \u00a92018 RedHot News. All rights reserved."
+        android:text=" \u00a92018 News Zone. All rights reserved."
         android:textSize="14sp"
         android:layout_marginBottom="20dp"
         android:id="@+id/textView" />
